@@ -12,12 +12,15 @@ declare(strict_types=1);
 
 namespace Firstphp\Tower;
 
+use Firstphp\Tower\Facades\TowerFactory;
+
 class ConfigProvider
 {
     public function __invoke(): array
     {
         return [
             'dependencies' => [
+                TowerInterface::class => TowerFactory::class
             ],
             'commands' => [
             ],
@@ -26,6 +29,14 @@ class ConfigProvider
                     'paths' => [
                         __DIR__,
                     ],
+                ],
+            ],
+            'publish' => [
+                [
+                    'id' => 'config',
+                    'description' => 'The config for firstphp-tower',
+                    'source' => __DIR__ . '/publish/tower.php',
+                    'destination' => BASE_PATH . '/config/autoload/tower.php',
                 ],
             ],
         ];
