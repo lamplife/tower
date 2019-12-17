@@ -1,2 +1,5 @@
-# tower
-Hyperf之Tower开发组件
+# component-creater
+
+```
+composer create-project hyperf/component-creater
+```
