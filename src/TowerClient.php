@@ -63,7 +63,10 @@ class TowerClient implements TowerInterface
             $this->client_sercet = $config['client_sercet'];
             $this->code = $config['auth_code'];
         }
-        $config['tokenInfo'] = $this->getAccessToken();
+        $redis = ApplicationContext::getContainer()->get(\Redis::class);
+        $tokenInfo = $redis->get("TOWER_TOKEN_INFO");
+        $tokenInfo = json_decode($tokenInfo, true);
+        $config['tokenInfo'] = $tokenInfo;
         $this->http = $container->make(Http::class, compact('config'));
         $this->client = $clientFactory;
     }
@@ -76,17 +79,14 @@ class TowerClient implements TowerInterface
     {
         $redis = ApplicationContext::getContainer()->get(\Redis::class);
         $tokenInfo = $redis->get("TOWER_TOKEN_INFO");
-
         if ($tokenInfo) {
             $tokenInfo = json_decode($tokenInfo, true);
             $expiresAt = $tokenInfo['expires_in'] - 300 + $tokenInfo['created_at'];
-
             if (time() >= $expiresAt) {
-                $redis->del("TOWER_TOKEN_INFO");
-
+//                $redis->del("TOWER_TOKEN_INFO");
                 $options = [
                     'base_uri' => $this->url,
-                    'timeout' => 2.0,
+                    'timeout' => 200,
                     'verify' => false,
                     'headers' => [
                         'Authorization' => "Bearer {$tokenInfo['access_token']}",
@@ -95,6 +95,7 @@ class TowerClient implements TowerInterface
                 ];
 
                 $client = $this->client->create($options);
+
                 $refreshToken = $client->post("oauth/token", [
                     'json' => [
                         'client_id' => $this->client_id,
@@ -200,7 +201,7 @@ class TowerClient implements TowerInterface
      * @param int $size
      * @return mixed
      */
-    public function getNotifications(string $team_id, int $page, int $size)
+    public function getNotifications(string $team_id, int $page = 1, int $size)
     {
         return $this->http->get("api/v1/teams/{$team_id}/notifications", [
             'query' => [
@@ -258,7 +259,7 @@ class TowerClient implements TowerInterface
      * @param int $page
      * @return mixed
      */
-    public function getMembers(string $team_id, int $page)
+    public function getMembers(string $team_id, int $page = 1)
     {
         return $this->http->get("api/v1/teams/{$team_id}/members", [
             'query' => [
@@ -311,7 +312,7 @@ class TowerClient implements TowerInterface
      * @param int $page
      * @return mixed
      */
-    public function getAssignedCompletedTodos(string $member_id, int $page)
+    public function getAssignedCompletedTodos(string $member_id, int $page = 1)
     {
         return $this->http->get("api/v1/members/{$member_id}/assigned_completed_todos", [
             'query' => [
@@ -328,7 +329,7 @@ class TowerClient implements TowerInterface
      * @param int $page
      * @return mixed
      */
-    public function getCreatedCompletedTodos(string $member_id, int $page)
+    public function getCreatedCompletedTodos(string $member_id, int $page = 1)
     {
         return $this->http->get("api/v1/members/{$member_id}/created_completed_todos", [
             'query' => [
@@ -509,7 +510,7 @@ class TowerClient implements TowerInterface
      * @param bool|false $completed_todo
      * @return mixed
      */
-    public function getTodos(string $todolist_id, int $page, bool $completed_todo = false)
+    public function getTodos(string $todolist_id, int $page = 1, bool $completed_todo = false)
     {
         return $this->http->get("api/v1/todolists/{$todolist_id}/todos", [
             'query' => [
@@ -530,11 +531,13 @@ class TowerClient implements TowerInterface
      */
     public function createTodos(string $todolist_id, string $content, string $desc)
     {
-        return $this->http->post("api/v1/todolist_id/{$todolist_id}/todos", [
+        return $this->http->post("api/v1/todolists/{$todolist_id}/todos", [
             'json' => [
                 "todo" => [
                     "content" => $content,
-                    "desc" => $desc
+                    "desc" => $desc,
+                    "assignee_id" => "",
+                    "due_at" => ""
                 ]
             ]
         ]);

@@ -61,7 +61,7 @@ interface TowerInterface
      * @param int $size
      * @return mixed
      */
-    public function getNotifications(string $team_id, int $page, int $size);
+    public function getNotifications(string $team_id, int $page = 1, int $size);
 
 
     /**
@@ -96,7 +96,7 @@ interface TowerInterface
      * @param int $page 从 1 开始计数
      * @return mixed
      */
-    public function getMembers(string $team_id, int $page);
+    public function getMembers(string $team_id, int $page = 1);
 
 
     /**
@@ -134,7 +134,7 @@ interface TowerInterface
      * @param int $page page 从 1 开始计数
      * @return mixed
      */
-    public function getAssignedCompletedTodos(string $member_id, int $page);
+    public function getAssignedCompletedTodos(string $member_id, int $page = 1);
 
 
     /**
@@ -144,7 +144,7 @@ interface TowerInterface
      * @param int $page 分页 page 从 1 开始计数
      * @return mixed
      */
-    public function getCreatedCompletedTodos(string $member_id, int $page);
+    public function getCreatedCompletedTodos(string $member_id, int $page = 1);
 
 
     /**
@@ -262,7 +262,7 @@ interface TowerInterface
      * @param bool|false $completed_todo 是否包含已完成任务，默认：false
      * @return mixed
      */
-    public function getTodos(string $todolist_id, int $page, bool $completed_todo = false);
+    public function getTodos(string $todolist_id, int $page = 1, bool $completed_todo = false);
 
 
     /**

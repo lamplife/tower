@@ -2,7 +2,7 @@
     "name": "firstphp/tower",
     "type": "library",
     "license": "MIT",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "authors": [
         {
             "name": "狂奔的蚂蚁",
@@ -35,6 +35,7 @@
         "friendsofphp/php-cs-fixer": "^2.14",
         "phpstan/phpstan": "^0.10.5",
         "hyperf/testing": "1.1.*",
+        "hyperf/redis": "~1.1.0",
         "swoft/swoole-ide-helper": "dev-master"
     },
     "config": {

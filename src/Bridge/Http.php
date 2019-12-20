@@ -44,6 +44,7 @@ class Http
     {
         $baseUri = isset($config['url']) && $config['url'] ? $config['url'] : $this->baseUrl;
         $tokenInfo = isset($config['tokenInfo']) && $config['tokenInfo'] ? $config['tokenInfo'] : '';
+        $accessToken = isset($tokenInfo['access_token']) && $tokenInfo['access_token'] ? $tokenInfo['access_token'] : '';
         $this->baseUrl = $baseUri;
         $this->clientFactory = $clientFactory;
         $this->options = [
@@ -51,7 +52,7 @@ class Http
             'timeout' => 2.0,
             'verify' => false,
             'headers' => [
-                'Authorization' => "Bearer {$tokenInfo['access_token']}",
+                'Authorization' => "Bearer {$accessToken}",
                 'Content-Type' => "application/json;charset=utf-8",
             ]
         ];
