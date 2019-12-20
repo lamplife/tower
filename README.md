@@ -1,7 +1,8 @@
 # tower for hyperf
 
 ```
-该组件封装了 Tower 几乎所有的 api，组件适用于 Hyperf 框架，通过对 Tower 获取 AccessToken、刷新 AccessToken 两个接口的封装，结合 Hyperf 定时任务，可以完全无需理会业务接口调用过程中所需考虑的 AccessToken 问题，组件会将最新 AccessToken 自动更新进 options 里面
+该组件封装了 Tower 几乎所有的 api，组件适用于 Hyperf 框架，通过对 Tower 获取 AccessToken、刷新 AccessToken 两个接口的封装，结合 Hyperf 定时任务，可以完全无需理会业务接口调用过程中所需考虑的 AccessToken 问题，组件会将最新 AccessToken 自动更新进 options 里面。
+组件使用了 Redis 缓存来存储 AccessToken，请安装完组件依赖的同时，继而事先配置好 Redis
 ```
 
 ## 安装组件
