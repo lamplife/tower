@@ -18,10 +18,11 @@
 
 
 ## 编辑.env配置
+TOWER_URL=https://tower.im/
 CLIENT_ID=ef8gd5cb1071e61483303432be7183af7c285993d74392364090bbdcb8710bbe
 CLIENT_SERCET=903390ab427caf30a4824c3322d004562714f6c69de34158749bc11e6fd72ddf
 AUTH_CODE=e1acb4311d6df4d86g5f83022f0eca8a592e1cbff94e55dcpac838e96beb3a40
-TOWER_URL=https://tower.im/
+
 
 
 ## Hyperf Demo
