@@ -65,8 +65,10 @@ class TowerClient implements TowerInterface
         }
         $redis = ApplicationContext::getContainer()->get(\Redis::class);
         $tokenInfo = $redis->get("TOWER_TOKEN_INFO");
-        $tokenInfo = json_decode($tokenInfo, true);
-        $config['tokenInfo'] = $tokenInfo;
+        if ($tokenInfo) {
+            $tokenInfo = json_decode($tokenInfo, true);
+            $config['tokenInfo'] = $tokenInfo;
+        }
         $this->http = $container->make(Http::class, compact('config'));
         $this->client = $clientFactory;
     }
